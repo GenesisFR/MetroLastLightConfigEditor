@@ -346,6 +346,7 @@ namespace MetroLastLightConfigEditor
         // File-related methods
         public bool CopyNoIntroFix(bool disableIntro)
         {
+            /*
             try
             {
                 string noIntroFilePath = Path.Combine(GameInstallPath, "content.upk9");
@@ -362,7 +363,7 @@ namespace MetroLastLightConfigEditor
             {
                 Logger.WriteInformation<Helper>(ex.Message, disableIntro);
             }
-
+            */
             return false;
         }
 

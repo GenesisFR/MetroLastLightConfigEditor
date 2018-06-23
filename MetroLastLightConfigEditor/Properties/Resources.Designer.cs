@@ -59,15 +59,5 @@ namespace MetroLastLightConfigEditor.Properties {
                 resourceCulture = value;
             }
         }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
-        /// </summary>
-        internal static byte[] noIntroFix {
-            get {
-                object obj = ResourceManager.GetObject("noIntroFix", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
     }
 }
