@@ -5,13 +5,13 @@ using System.Diagnostics;
 using System.IO;
 using System.Windows.Forms;
 
-namespace Metro2033ConfigEditor
+namespace MetroLastLightConfigEditor
 {
-    public partial class Metro2033ConfigEditorForm : Form
+    public partial class MetroLastLightConfigEditorForm : Form
     {
         private bool _skipIntroInitialState = false;
 
-        public Metro2033ConfigEditorForm()
+        public MetroLastLightConfigEditorForm()
         {
             InitializeComponent();
             AddTooltips();
@@ -20,12 +20,12 @@ namespace Metro2033ConfigEditor
             backgroundWorker.RunWorkerAsync();
         }
 
-        private void Metro2033ConfigEditorForm_Shown(object sender, EventArgs e)
+        private void MetroLastLightConfigEditorForm_Shown(object sender, EventArgs e)
         {
             refreshUI();
         }
 
-        private void Metro2033ConfigEditorForm_Closing(object sender, FormClosingEventArgs e)
+        private void MetroLastLightConfigEditorForm_Closing(object sender, FormClosingEventArgs e)
         {
             if (HaveSettingsChanged())
             {
@@ -431,7 +431,7 @@ namespace Metro2033ConfigEditor
 
         private void ButtonReportBug_Click(object sender, EventArgs e)
         {
-            StartProcess("https://github.com/GenesisFR/Metro2033ConfigEditor/issues");
+            StartProcess("https://github.com/GenesisFR/MetroLastLightConfigEditor/issues");
         }
 
         private void ButtonDonate_Click(object sender, EventArgs e)
@@ -442,7 +442,7 @@ namespace Metro2033ConfigEditor
         private void LinkLabelUpdateAvailable_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             linkLabelUpdateAvailable.LinkVisited = true;
-            StartProcess("https://github.com/GenesisFR/Metro2033ConfigEditor/releases/latest");
+            StartProcess("https://github.com/GenesisFR/MetroLastLightConfigEditor/releases/latest");
         }
 
         private void ButtonReload_Click(object sender, EventArgs e)

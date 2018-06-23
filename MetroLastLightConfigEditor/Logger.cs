@@ -4,7 +4,7 @@ using System.IO;
 using System.Runtime.CompilerServices;
 using System.Security.Principal;
 
-namespace Metro2033ConfigEditor
+namespace MetroLastLightConfigEditor
 {
     class Logger
     {

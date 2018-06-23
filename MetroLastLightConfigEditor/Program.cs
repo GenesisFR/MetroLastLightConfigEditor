@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 
-namespace Metro2033ConfigEditor
+namespace MetroLastLightConfigEditor
 {
     static class Program
     {
@@ -23,7 +23,7 @@ namespace Metro2033ConfigEditor
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Metro2033ConfigEditorForm());
+            Application.Run(new MetroLastLightConfigEditorForm());
         }
     }
 }

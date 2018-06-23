@@ -7,7 +7,7 @@ using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-namespace Metro2033ConfigEditor
+namespace MetroLastLightConfigEditor
 {
     public sealed class Helper
     {
@@ -352,7 +352,7 @@ namespace Metro2033ConfigEditor
 
                 // Copy the intro fix to the game directory
                 if (disableIntro)
-                    File.WriteAllBytes(noIntroFilePath, Metro2033ConfigEditor.Properties.Resources.noIntroFix);
+                    File.WriteAllBytes(noIntroFilePath, MetroLastLightConfigEditor.Properties.Resources.noIntroFix);
                 else
                     File.Delete(noIntroFilePath);
 
@@ -461,7 +461,7 @@ namespace Metro2033ConfigEditor
                 {
                     // Read the content of the file
                     result = await client.DownloadStringTaskAsync(
-                        new Uri("https://raw.githubusercontent.com/GenesisFR/Metro2033ConfigEditor/master/version.txt"));
+                        new Uri("https://raw.githubusercontent.com/GenesisFR/MetroLastLightConfigEditor/master/version.txt"));
                 }
             }
             catch (Exception ex)

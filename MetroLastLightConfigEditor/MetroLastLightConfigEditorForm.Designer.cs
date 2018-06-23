@@ -1,6 +1,6 @@
-﻿namespace Metro2033ConfigEditor
+﻿namespace MetroLastLightConfigEditor
 {
-    partial class Metro2033ConfigEditorForm
+    partial class MetroLastLightConfigEditorForm
     {
         /// <summary>
         /// Required designer variable.
@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Metro2033ConfigEditorForm));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MetroLastLightConfigEditorForm));
             this.buttonReload = new System.Windows.Forms.Button();
             this.labelConfigFilePath = new System.Windows.Forms.Label();
             this.textBoxConfigFilePath = new System.Windows.Forms.TextBox();
@@ -1416,7 +1416,7 @@
             this.buttonDonate.UseVisualStyleBackColor = true;
             this.buttonDonate.Click += new System.EventHandler(this.ButtonDonate_Click);
             // 
-            // Metro2033ConfigEditorForm
+            // MetroLastLightConfigEditorForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -1441,11 +1441,11 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
-            this.Name = "Metro2033ConfigEditorForm";
+            this.Name = "MetroLastLightConfigEditorForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Metro 2033 Config Editor v1.29";
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Metro2033ConfigEditorForm_Closing);
-            this.Shown += new System.EventHandler(this.Metro2033ConfigEditorForm_Shown);
+            this.Text = "Metro: Last Light Config Editor v1.0";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MetroLastLightConfigEditorForm_Closing);
+            this.Shown += new System.EventHandler(this.MetroLastLightConfigEditorForm_Shown);
             this.tabVideo.ResumeLayout(false);
             this.tabVideo.PerformLayout();
             this.groupBoxDescription.ResumeLayout(false);

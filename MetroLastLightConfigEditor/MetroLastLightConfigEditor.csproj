@@ -6,8 +6,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{FC9AC2BC-8F16-4B04-B76C-F41622392D80}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>Metro2033ConfigEditor</RootNamespace>
-    <AssemblyName>Metro2033ConfigEditor</AssemblyName>
+    <RootNamespace>MetroLastLightConfigEditor</RootNamespace>
+    <AssemblyName>MetroLastLightConfigEditor</AssemblyName>
     <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -51,7 +51,7 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup>
-    <StartupObject>Metro2033ConfigEditor.Program</StartupObject>
+    <StartupObject>MetroLastLightConfigEditor.Program</StartupObject>
   </PropertyGroup>
   <PropertyGroup>
     <SignManifests>false</SignManifests>
@@ -85,16 +85,16 @@
   <ItemGroup>
     <Compile Include="Instance.cs" />
     <Compile Include="Logger.cs" />
-    <Compile Include="Metro2033ConfigEditorForm.cs">
+    <Compile Include="MetroLastLightConfigEditorForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Metro2033ConfigEditorForm.Designer.cs">
-      <DependentUpon>Metro2033ConfigEditorForm.cs</DependentUpon>
+    <Compile Include="MetroLastLightConfigEditorForm.Designer.cs">
+      <DependentUpon>MetroLastLightConfigEditorForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="Metro2033ConfigEditorForm.resx">
-      <DependentUpon>Metro2033ConfigEditorForm.cs</DependentUpon>
+    <EmbeddedResource Include="MetroLastLightConfigEditorForm.resx">
+      <DependentUpon>MetroLastLightConfigEditorForm.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">

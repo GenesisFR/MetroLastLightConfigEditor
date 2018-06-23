@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27130.2010
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Metro2033ConfigEditorApp", "Metro2033ConfigEditor\Metro2033ConfigEditorApp.csproj", "{FC9AC2BC-8F16-4B04-B76C-F41622392D80}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MetroLastLightConfigEditorApp", "MetroLastLightConfigEditor\MetroLastLightConfigEditor.csproj", "{FC9AC2BC-8F16-4B04-B76C-F41622392D80}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
