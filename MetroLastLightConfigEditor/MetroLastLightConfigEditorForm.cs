@@ -238,6 +238,9 @@ namespace MetroLastLightConfigEditor
                     MessageBoxButtons.OK, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button1) == DialogResult.Yes)
                     buttonStartGameSteam.PerformClick();
             }
+
+            if (Helper.instance.GameInstallPath != null)
+                fileSystemWatcherNoIntro.Path = Helper.instance.GameInstallPath;
         }
 
         private void StartProcess(object path)
@@ -470,8 +473,14 @@ namespace MetroLastLightConfigEditor
                     MessageBox.Show("Unable to save the config file. Try running the program as admin?",
                         "Failure", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
-                if (!Helper.instance.CopyNoIntroFix(checkBoxSkipIntro.Checked))
-                    MessageBox.Show("Unable to enable/disable the no intro fix. Make sure the game executable path has been specified.",
+                if (!Helper.instance.BackupIntroFile(checkBoxSkipIntro.Checked))
+                    MessageBox.Show(string.Format("{0}{1}{2}{3}{4}",
+                        "Unable to ",
+                        checkBoxSkipIntro.Checked ? "backup" : "restore",
+                        " the intro file. Make sure the game executable path has been specified and there's a file named ",
+                        checkBoxSkipIntro.Checked ? "\"legal.ogv\"" : "\"legal.ogv.bak\"",
+                        " in the game directory."
+                        ),
                         "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
             catch (Exception ex)

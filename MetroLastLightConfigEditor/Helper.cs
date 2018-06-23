@@ -16,7 +16,7 @@ namespace MetroLastLightConfigEditor
         Helper()
         {
             SteamInstallPath   = GetSteamInstallPath();   // C:\Program Files (x86)\Steam
-            ConfigFilePath     = GetConfigPath();         // C:\Program Files (x86)\Steam\userdata\<user-id>\43110\remote\user.cfg
+            ConfigFilePath     = GetConfigPath();         // C:\Users\<username>\AppData\Local\4A Games\Metro LL\<user-id>\user.cfg
             GameInstallPath    = GetGameInstallPath();    // C:\Program Files (x86)\Steam\steamapps\common\Metro Last Light
             GameExecutablePath = GetGameExecutablePath(); // C:\Program Files (x86)\Steam\steamapps\common\Metro Last Light\metroLL.exe
             Dictionary         = new Dictionary<string, string>();
@@ -35,7 +35,7 @@ namespace MetroLastLightConfigEditor
             get
             {
                 if (GameInstallPath != null)
-                    return File.Exists(Path.Combine(GameInstallPath, "content.upk9"));
+                    return !File.Exists(Path.Combine(GameInstallPath, "legal.ogv"));
                 else
                     return false;
             }
@@ -323,13 +323,14 @@ namespace MetroLastLightConfigEditor
         {
             try
             {
-                string steamÞath = SteamInstallPath ?? GetSteamInstallPath();
-                string[] steamUserDataDirs = Directory.GetDirectories(Path.Combine(steamÞath, "userdata"));
+                string metroLLAppDataPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+                    @"4A Games\Metro LL");
+                string[] metroLLAppDataDirs = Directory.GetDirectories(metroLLAppDataPath);
 
                 // Parse through Steam user directories in search of the config file and return the first one found
-                foreach (string steamUserDataDir in steamUserDataDirs)
+                foreach (string metroLLAppDataDir in metroLLAppDataDirs)
                 {
-                    string configPath = Path.Combine(steamUserDataDir, @"43110\remote\user.cfg");
+                    string configPath = Path.Combine(metroLLAppDataDir, "user.cfg");
 
                     if (File.Exists(configPath))
                         return configPath.ToLower();
@@ -344,26 +345,46 @@ namespace MetroLastLightConfigEditor
         }
 
         // File-related methods
-        public bool CopyNoIntroFix(bool disableIntro)
+        public bool BackupIntroFile(bool isBackedUp)
         {
-            /*
             try
             {
-                string noIntroFilePath = Path.Combine(GameInstallPath, "content.upk9");
+                string introFilePath = Path.Combine(GameInstallPath, "legal.ogv");
+                string introFileBackupPath = Path.Combine(GameInstallPath, "legal.ogv.bak");
 
-                // Copy the intro fix to the game directory
-                if (disableIntro)
-                    File.WriteAllBytes(noIntroFilePath, MetroLastLightConfigEditor.Properties.Resources.noIntroFix);
+                // Backup the intro file
+                if (isBackedUp)
+                {
+                    if (File.Exists(introFilePath))
+                    {
+                        if (File.Exists(introFileBackupPath))
+                            File.Delete(introFileBackupPath);
+
+                        File.Move(introFilePath, introFileBackupPath);
+                    }
+
+                    return true;
+                }
+                // Restore the intro file backup
                 else
-                    File.Delete(noIntroFilePath);
+                {
+                    if (File.Exists(introFileBackupPath))
+                    {
+                        if (File.Exists(introFilePath))
+                            File.Delete(introFilePath);
 
-                return true;
+                        File.Move(introFileBackupPath, introFilePath);
+                    }
+
+                    return true;
+                }
+
             }
             catch (Exception ex)
             {
-                Logger.WriteInformation<Helper>(ex.Message, disableIntro);
+                Logger.WriteInformation<Helper>(ex.Message, isBackedUp);
             }
-            */
+
             return false;
         }
 

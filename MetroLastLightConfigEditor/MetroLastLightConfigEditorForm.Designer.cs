@@ -1389,7 +1389,7 @@
             // fileSystemWatcherNoIntro
             // 
             this.fileSystemWatcherNoIntro.EnableRaisingEvents = true;
-            this.fileSystemWatcherNoIntro.Filter = "content.upk9";
+            this.fileSystemWatcherNoIntro.Filter = "legal.ogv";
             this.fileSystemWatcherNoIntro.NotifyFilter = System.IO.NotifyFilters.FileName;
             this.fileSystemWatcherNoIntro.SynchronizingObject = this;
             this.fileSystemWatcherNoIntro.Created += new System.IO.FileSystemEventHandler(this.FileSystemWatcherNoIntro_Changed);
