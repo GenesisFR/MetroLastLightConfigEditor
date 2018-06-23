@@ -58,8 +58,8 @@ namespace MetroLastLightConfigEditor
             toolTip.SetToolTip(checkBoxGlobalIllumination, "Turns on global illumination. If you're running a weak CPU, this might" +
                 " actually be a performance hit, but in most cases it actually acts as a gain.\nIt changes the lighting to a different" +
                 " system that works better with DX10 and 11. So if you're running DX9, I'd recommend against this change.");
-            toolTip.SetToolTip(checkBoxVsync, "By default, Metro 2033 apparently runs in Stereoscopic 3D which can impact" +
-                "\nFor some reason, enabling Vsync will disable stereoscopy, thus boosting your framerate.");
+            toolTip.SetToolTip(checkBoxVsync, "By default, Metro: Last Light apparently runs in Stereoscopic 3D which can impact" +
+                "performance. \nFor some reason, enabling Vsync will disable stereoscopy, thus boosting your framerate.");
         }
 
         private void ComboBoxQuality_SelectedLow()
@@ -229,7 +229,7 @@ namespace MetroLastLightConfigEditor
                 string steamPath = Helper.instance.SteamInstallPath != null ? String.Format(@"{0}\{1}", Helper.instance.SteamInstallPath,
                     @"userdata\<user-id>\43110\remote\") : @"Steam\userdata\<user-id>\43110\remote\";
                 string text = String.Format("{0}\n\n{1}\n\n{2}{3}",
-                    "We were not able to locate the config file for Metro 2033, please run the game at least once to generate it.",
+                    "We were not able to locate the config file for Metro: Last Light, please run the game at least once to generate it.",
                     "You can also point to its location by using the corresponding Browse button. It should be located here:",
                     steamPath,
                     Helper.instance.SteamInstallPath != null ? "\n\nDo you want to run the game now?" : "");
@@ -327,7 +327,7 @@ namespace MetroLastLightConfigEditor
         {
             using (OpenFileDialog openFileDialog = new OpenFileDialog())
             {
-                openFileDialog.Filter = "Metro 2033 config file|user.cfg";
+                openFileDialog.Filter = "Metro: Last Light config file|user.cfg";
 
                 // Pick config folder, then Steam folder and finally Program Files
                 openFileDialog.InitialDirectory = Helper.instance.ConfigFilePath != null ?
@@ -354,7 +354,7 @@ namespace MetroLastLightConfigEditor
         {
             using (OpenFileDialog openFileDialog = new OpenFileDialog())
             {
-                openFileDialog.Filter = "Metro 2033 executable|metro2033.exe";
+                openFileDialog.Filter = "Metro: Last Light executable|metroLL.exe";
                 openFileDialog.InitialDirectory = Helper.instance.GameInstallPath;
 
                 // Show a file browser

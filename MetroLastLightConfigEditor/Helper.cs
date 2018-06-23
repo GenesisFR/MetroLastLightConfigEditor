@@ -17,8 +17,8 @@ namespace MetroLastLightConfigEditor
         {
             SteamInstallPath   = GetSteamInstallPath();   // C:\Program Files (x86)\Steam
             ConfigFilePath     = GetConfigPath();         // C:\Program Files (x86)\Steam\userdata\<user-id>\43110\remote\user.cfg
-            GameInstallPath    = GetGameInstallPath();    // C:\Program Files (x86)\Steam\steamapps\common\Metro 2033
-            GameExecutablePath = GetGameExecutablePath(); // C:\Program Files (x86)\Steam\steamapps\common\Metro 2033\metro2033.exe
+            GameInstallPath    = GetGameInstallPath();    // C:\Program Files (x86)\Steam\steamapps\common\Metro Last Light
+            GameExecutablePath = GetGameExecutablePath(); // C:\Program Files (x86)\Steam\steamapps\common\Metro Last Light\metroLL.exe
             Dictionary         = new Dictionary<string, string>();
         }
 
@@ -243,10 +243,10 @@ namespace MetroLastLightConfigEditor
             try
             {
                 RegistryKey key =
-                    Registry.LocalMachine.OpenSubKey(@"Software\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall\Steam App 43110") ??
-                    Registry.LocalMachine.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Uninstall\Steam App 43110") ??
-                    Registry.CurrentUser.OpenSubKey(@"Software\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall\Steam App 43110") ??
-                    Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Uninstall\Steam App 43110");
+                    Registry.LocalMachine.OpenSubKey(@"Software\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall\Steam App 43160") ??
+                    Registry.LocalMachine.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Uninstall\Steam App 43160") ??
+                    Registry.CurrentUser.OpenSubKey(@"Software\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall\Steam App 43160") ??
+                    Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Uninstall\Steam App 43160");
 
                 if (key != null)
                 {
@@ -270,7 +270,7 @@ namespace MetroLastLightConfigEditor
             {
                 string currentDir = Directory.GetCurrentDirectory();
 
-                if (File.Exists(Path.Combine(currentDir, "metro2033.exe")))
+                if (File.Exists(Path.Combine(currentDir, "metroLL.exe")))
                     return currentDir.ToLower();
             }
             catch (Exception ex)
@@ -287,9 +287,9 @@ namespace MetroLastLightConfigEditor
             {
                 foreach (string steamLibDir in GetSteamLibraryDirs())
                 {
-                    string gameSteamDir = Path.Combine(steamLibDir, @"steamapps\common\Metro 2033");
+                    string gameSteamDir = Path.Combine(steamLibDir, @"steamapps\common\Metro Last Light");
 
-                    if (File.Exists(Path.Combine(gameSteamDir, "metro2033.exe")))
+                    if (File.Exists(Path.Combine(gameSteamDir, "metroLL.exe")))
                         return gameSteamDir.ToLower();
                 }
             }
@@ -306,7 +306,7 @@ namespace MetroLastLightConfigEditor
             try
             {
                 string gamePath = GameInstallPath ?? GetGameInstallPath();
-                string gameExePath = Path.Combine(gamePath, "metro2033.exe");
+                string gameExePath = Path.Combine(gamePath, "metroLL.exe");
 
                 if (File.Exists(gameExePath))
                     return gameExePath;
