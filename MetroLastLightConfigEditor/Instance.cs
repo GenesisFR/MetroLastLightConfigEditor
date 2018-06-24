@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Threading;
 
 namespace MetroLastLightConfigEditor
@@ -9,7 +10,7 @@ namespace MetroLastLightConfigEditor
 
         public static bool IsSingleInstance()
         {
-            string guid = Assembly.GetEntryAssembly().GetType().GUID.ToString();
+            string guid = Marshal.GetTypeLibGuidForAssembly(Assembly.GetExecutingAssembly()).ToString();
 
             try
             {
