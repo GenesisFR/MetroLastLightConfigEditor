@@ -18,8 +18,9 @@ namespace MetroLastLightConfigEditor
             SteamInstallPath   = GetSteamInstallPath();   // C:\Program Files (x86)\Steam
             ConfigFilePath     = GetConfigPath();         // C:\Users\<username>\AppData\Local\4A Games\Metro LL\<user-id>\user.cfg
             GameInstallPath    = GetGameInstallPath();    // C:\Program Files (x86)\Steam\steamapps\common\Metro Last Light
-            GameExecutablePath = GetGameExecutablePath(); // C:\Program Files (x86)\Steam\steamapps\common\Metro Last Light\metroLL.exe
-            Dictionary         = new Dictionary<string, string>();
+            GameExecutablePath = GetGameExecutablePath(); // C:\Program Files (x86)\Steam\steamapps\common\Metro Last Light\MetroLL.exe
+            SavedGamesPath     = GetSavedGamesPath();     // C:\Users\<username>\Documents\4A Games\Metro LL
+            Dictionary = new Dictionary<string, string>();
         }
 
         // Properties
@@ -27,6 +28,7 @@ namespace MetroLastLightConfigEditor
         public string ConfigFilePath { get; set; }
         public string GameInstallPath { get; set; }
         public string GameExecutablePath { get; set; }
+        public string SavedGamesPath { get; private set; }
         public Dictionary<string, string> Dictionary { get; }
         public Dictionary<string, string> DictionaryUponClosure { get; private set; }
 
@@ -67,36 +69,34 @@ namespace MetroLastLightConfigEditor
 
         public void AddKeysIfMissing()
         {
-            AddKeyIfMissing("_show_subtitles",   "0");
-            AddKeyIfMissing("fast_wpn_change",   "0");
-            AddKeyIfMissing("g_game_difficulty", "1");
-            AddKeyIfMissing("g_god",             "0");
+            AddKeyIfMissing("_show_subtitles",   "1");
+            AddKeyIfMissing("aim_assist",        "1.");
+            AddKeyIfMissing("fps",               "off");
+            AddKeyIfMissing("g_game_difficulty", "0");
             AddKeyIfMissing("g_laser",           "1");
             AddKeyIfMissing("g_quick_hints",     "1");
             AddKeyIfMissing("g_show_crosshair",  "on");
-            AddKeyIfMissing("g_unlimitedammo",   "0");
+            AddKeyIfMissing("invert_y_axis",     "off");
             AddKeyIfMissing("lang_sound",        "us");
             AddKeyIfMissing("lang_text",         "us");
-            AddKeyIfMissing("mouse_aim_sens",    "0.208");
-            AddKeyIfMissing("mouse_sens",        "0.4");
-            AddKeyIfMissing("ph_advanced_physX", "0");
-            AddKeyIfMissing("r_af_level",        "0");
-            AddKeyIfMissing("r_api",             "0");
-            AddKeyIfMissing("r_dx11_dof",        "1");
-            AddKeyIfMissing("r_dx11_tess",       "1");
+            AddKeyIfMissing("ph_advanced_physX", "1");
+            AddKeyIfMissing("r_af_level",        "1");
+            AddKeyIfMissing("r_api",             "2");
+            AddKeyIfMissing("r_base_fov",        "50.625");
+            AddKeyIfMissing("r_blur_level",      "1");
+            AddKeyIfMissing("r_dx11_tess",       "0");
             AddKeyIfMissing("r_fullscreen",      "on");
-            AddKeyIfMissing("r_gi",              "0");
-            AddKeyIfMissing("r_hud_weapon",      "on");
-            AddKeyIfMissing("r_msaa_level",      "0");
             AddKeyIfMissing("r_gamma",           "1.");
-            AddKeyIfMissing("r_quality_level",   "2");
-            AddKeyIfMissing("r_res_hor",         "1024");
-            AddKeyIfMissing("r_res_vert",        "768");
+            AddKeyIfMissing("r_quality_level",   "3");
+            AddKeyIfMissing("r_res_hor",         "1920");
+            AddKeyIfMissing("r_res_vert",        "1200");
+            AddKeyIfMissing("r_tess_ss",         "0");
             AddKeyIfMissing("r_vsync",           "off");
-            AddKeyIfMissing("s_master_volume",   "0.50");
-            AddKeyIfMissing("s_music_volume",    "0.50");
-            AddKeyIfMissing("sick_fov",          "45.");
-            AddKeyIfMissing("stats",             "off");
+            AddKeyIfMissing("s_dialogs_volume",  "1.00");
+            AddKeyIfMissing("s_effects_volume",  "1.00");
+            AddKeyIfMissing("s_master_volume",   "1.00");
+            AddKeyIfMissing("s_music_volume",    "1.00");
+            AddKeyIfMissing("sens",              "0.400");
         }
 
         public bool AreDictionariesEqual()
@@ -270,7 +270,7 @@ namespace MetroLastLightConfigEditor
             {
                 string currentDir = Directory.GetCurrentDirectory();
 
-                if (File.Exists(Path.Combine(currentDir, "metroLL.exe")))
+                if (File.Exists(Path.Combine(currentDir, "MetroLL.exe")))
                     return currentDir.ToLower();
             }
             catch (Exception ex)
@@ -289,7 +289,7 @@ namespace MetroLastLightConfigEditor
                 {
                     string gameSteamDir = Path.Combine(steamLibDir, @"steamapps\common\Metro Last Light");
 
-                    if (File.Exists(Path.Combine(gameSteamDir, "metroLL.exe")))
+                    if (File.Exists(Path.Combine(gameSteamDir, "MetroLL.exe")))
                         return gameSteamDir.ToLower();
                 }
             }
@@ -306,7 +306,7 @@ namespace MetroLastLightConfigEditor
             try
             {
                 string gamePath = GameInstallPath ?? GetGameInstallPath();
-                string gameExePath = Path.Combine(gamePath, "metroLL.exe");
+                string gameExePath = Path.Combine(gamePath, "MetroLL.exe");
 
                 if (File.Exists(gameExePath))
                     return gameExePath;
@@ -327,13 +327,14 @@ namespace MetroLastLightConfigEditor
                     @"4A Games\Metro LL");
                 string[] metroLLAppDataDirs = Directory.GetDirectories(metroLLAppDataPath);
 
-                // Parse through Steam user directories in search of the config file and return the first one found
+                // Parse through Metro LL localappdata directories in search of the config file and return the first one found
                 foreach (string metroLLAppDataDir in metroLLAppDataDirs)
                 {
                     string configPath = Path.Combine(metroLLAppDataDir, "user.cfg");
 
+                    // Fancy replace to make the config path more readable
                     if (File.Exists(configPath))
-                        return configPath.ToLower();
+                        return configPath.ToLower().Replace("metro ll", "metro LL");
                 }
             }
             catch (Exception ex)
@@ -342,6 +343,11 @@ namespace MetroLastLightConfigEditor
             }
 
             return null;
+        }
+
+        private string GetSavedGamesPath()
+        {
+            return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments).ToLower(), @"4A games\metro LL");
         }
 
         // File-related methods
@@ -411,6 +417,7 @@ namespace MetroLastLightConfigEditor
             try
             {
                 string[] fileLines = File.ReadAllLines(ConfigFilePath);
+                Dictionary.Clear();
 
                 // Parse the content of the config and store every line in a dictionary
                 foreach (string fileLine in fileLines)
@@ -530,42 +537,6 @@ namespace MetroLastLightConfigEditor
         }
 
         // Conversion methods
-        public string ConvertNumberToDifficulty(string number)
-        {
-            switch (number)
-            {
-                default:
-                case "0":
-                    return "Easy";
-                case "1":
-                    return "Normal";
-                case "2":
-                    return "Hardcore";
-                case "3":
-                    return "Ranger easy";
-                case "4":
-                    return "Ranger hardcore";
-            }
-        }
-
-        public string ConvertDifficultyToNumber(string difficulty)
-        {
-            switch (difficulty)
-            {
-                default:
-                case "Easy":
-                    return "0";
-                case "Normal":
-                    return "1";
-                case "Hardcore":
-                    return "2";
-                case "Ranger easy":
-                    return "3";
-                case "Ranger hardcore":
-                    return "4";
-            }
-        }
-
         public string ConvertCodeToLanguage(string code)
         {
             switch (code)
@@ -618,6 +589,74 @@ namespace MetroLastLightConfigEditor
             }
         }
 
+        public string ConvertNumberToDifficulty(string number)
+        {
+            switch (number)
+            {
+                default:
+                case "0":
+                    return "Easy";
+                case "1":
+                    return "Normal";
+                case "2":
+                    return "Hardcore";
+                case "4":
+                    return "Ranger normal";
+                case "5":
+                    return "Ranger hardcore";
+            }
+        }
+
+        public string ConvertDifficultyToNumber(string difficulty)
+        {
+            switch (difficulty)
+            {
+                default:
+                case "Easy":
+                    return "0";
+                case "Normal":
+                    return "1";
+                case "Hardcore":
+                    return "2";
+                case "Ranger normal":
+                    return "4";
+                case "Ranger hardcore":
+                    return "5";
+            }
+        }
+
+        public string ConvertNumberToQualityLevel(string number)
+        {
+            switch (number)
+            {
+                default:
+                case "0":
+                    return "Low";
+                case "1":
+                    return "Medium";
+                case "2":
+                    return "High";
+                case "3":
+                    return "Very high";
+            }
+        }
+
+        public string ConvertQualityLevelToNumber(string qualityLevel)
+        {
+            switch (qualityLevel)
+            {
+                default:
+                case "Low":
+                    return "0";
+                case "Medium":
+                    return "1";
+                case "High":
+                    return "2";
+                case "Very high":
+                    return "3";
+            }
+        }
+
         public string ConvertNumberToDirectX(string number)
         {
             switch (number)
@@ -646,7 +685,67 @@ namespace MetroLastLightConfigEditor
             }
         }
 
-        public string ConvertNumberToQualityLevel(string number)
+        public string ConvertNumberToSSAA(string number)
+        {
+            switch (number)
+            {
+                case "0.5":
+                    return "0.5X";
+                default:
+                case "1.":
+                    return "Off";
+                case "2.":
+                    return "2X";
+                case "3.":
+                    return "3X";
+                case "4.":
+                    return "4X";
+            }
+        }
+
+        public string ConvertSSAAToNumber(string ssaa)
+        {
+            switch (ssaa)
+            {
+                case "0.5X":
+                    return "0.5";
+                default:
+                case "Off":
+                    return "1.";
+                case "2X":
+                    return "2.";
+                case "3X":
+                    return "3.";
+                case "4X":
+                    return "4.";
+            }
+        }
+
+        public string ConvertNumberToTextureFiltering(string number)
+        {
+            switch (number)
+            {
+                default:
+                case "0":
+                    return "AF 4X";
+                case "1":
+                    return "AF 16X";
+            }
+        }
+
+        public string ConvertTextureFilteringToNumber(string textureFiltering)
+        {
+            switch (textureFiltering)
+            {
+                default:
+                case "AF 4X":
+                    return "0";
+                case "AF 16X":
+                    return "1";
+            }
+        }
+
+        public string ConvertNumberToMotionBlurLevel(string number)
         {
             switch (number)
             {
@@ -654,27 +753,56 @@ namespace MetroLastLightConfigEditor
                 case "0":
                     return "Low";
                 case "1":
-                    return "Medium";
-                case "2":
-                    return "High";
-                case "3":
-                    return "Very high";
+                    return "Normal";
             }
         }
 
-        public string ConvertQualityLevelToNumber(string quality)
+        public string ConvertMotionBlurLevelToNumber(string motionBlurLevel)
         {
-            switch (quality)
+            switch (motionBlurLevel)
             {
                 default:
                 case "Low":
                     return "0";
-                case "Medium":
+                case "Normal":
                     return "1";
+            }
+        }
+
+        public string ConvertNumbersToTessellation(string r_dx11_tess, string r_tess_ss)
+        {
+            switch (r_dx11_tess)
+            {
+                default:
+                case "0":
+                    return "Off";
+                case "1":
+                    switch (r_tess_ss)
+                    {
+                        default:
+                        case "0":
+                            return "Normal";
+                        case "1":
+                            return "High";
+                        case "2":
+                            return "Very high";
+                    }
+            }
+        }
+
+        public string[] ConvertTessellationToNumbers(string tessellation)
+        {
+            switch (tessellation)
+            {
+                default:
+                case "Off":
+                    return new string[] { "0", "0"};
+                case "Normal":
+                    return new string[] { "1", "0"};
                 case "High":
-                    return "2";
+                    return new string[] { "1", "1"};
                 case "Very high":
-                    return "3";
+                    return new string[] { "1", "2"};
             }
         }
     }

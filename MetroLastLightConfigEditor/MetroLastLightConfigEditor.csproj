@@ -118,7 +118,6 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <None Include="resources\content.upk9" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -136,7 +135,7 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="metro2033.ico" />
+    <Content Include="metroLL.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

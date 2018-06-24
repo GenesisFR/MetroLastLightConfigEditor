@@ -44,27 +44,20 @@ namespace MetroLastLightConfigEditor
 
         private void AddTooltips()
         {
-            toolTip.SetToolTip(checkBoxSkipIntro, "Skips intro logos and intro cutscene.");
-            toolTip.SetToolTip(checkBoxScreenshotMode, "Completely hides your weapon. You can combine it with the Ranger Hardcore" +
-                " difficulty to completely hide your HUD.");
-            toolTip.SetToolTip(checkBoxShowStats, "Displays debug information such as framerate, draw count, etc.");
-            toolTip.SetToolTip(checkBoxUnlimitedAmmo, "Gives unlimited ammo for all types of ammo, including military-grade ammo." +
-                " Military-grade ammo will deplete when buying items.");
-            toolTip.SetToolTip(checkBoxGodMode, "Makes you invulnerable but you will need to wear a gas mask when required.");
-            toolTip.SetToolTip(spinnerFov, "Changes ingame FOV. Default FOV is 45. Below that, the main menu is cropped.");
+            toolTip.SetToolTip(checkBoxSkipIntro, "Skips intro logos partially.");
+            toolTip.SetToolTip(checkBoxShowFPS, "Displays a framerate in the top right corner.");
+            toolTip.SetToolTip(spinnerFov, "Changes ingame FOV. Default FOV is 50.625. Increasing it will result in some graphical" +
+                " glitches due to the use of 3D-rendered screen overlays in certain parts of the game.");
             toolTip.SetToolTip(checkBoxFullscreen, "Uncheck to play the game in windowed mode. To play borderless fullscreen, change" +
                 " your resolution to your native resolution.\nPlease note that the game was never meant to be played windowed so the" +
                 " taskbar will still be visible.");
-            toolTip.SetToolTip(checkBoxGlobalIllumination, "Turns on global illumination. If you're running a weak CPU, this might" +
-                " actually be a performance hit, but in most cases it actually acts as a gain.\nIt changes the lighting to a different" +
-                " system that works better with DX10 and 11. So if you're running DX9, I'd recommend against this change.");
             toolTip.SetToolTip(checkBoxVsync, "By default, Metro: Last Light apparently runs in Stereoscopic 3D which can impact" +
                 "performance. \nFor some reason, enabling Vsync will disable stereoscopy, thus boosting your framerate.");
         }
 
         private void ComboBoxQuality_SelectedLow()
         {
-            labelMotionBlurValue.Text               = "Disabled";
+            labelQualityMotionBlurValue.Text        = "Disabled";
             labelSkinShadingValue.Text              = "Disabled";
             labelBumpMappingValue.Text              = "Coarse";
             labelSoftParticlesValue.Text            = "Disabled";
@@ -76,13 +69,13 @@ namespace MetroLastLightConfigEditor
             labelImagePostProcessingValue.Text      = "Normal";
             labelParallaxMappingValue.Text          = "Disabled";
             labelShadowFilteringValue.Text          = "Fast";
-            labelAnalyticalAntiAliasingValue.Text   = "Disabled";
+            labelAnalyticalAntiAliasingValue.Text   = "Enabled";
             labelVolumetricTexturingValue.Text      = "Disabled";
         }
 
         private void ComboBoxQuality_SelectedMedium()
         {
-            labelMotionBlurValue.Text               = "Disabled";
+            labelQualityMotionBlurValue.Text        = "Disabled";
             labelSkinShadingValue.Text              = "Disabled";
             labelBumpMappingValue.Text              = "Coarse";
             labelSoftParticlesValue.Text            = "Disabled";
@@ -94,13 +87,13 @@ namespace MetroLastLightConfigEditor
             labelImagePostProcessingValue.Text      = "Normal";
             labelParallaxMappingValue.Text          = "Disabled";
             labelShadowFilteringValue.Text          = "Normal";
-            labelAnalyticalAntiAliasingValue.Text   = "Disabled";
+            labelAnalyticalAntiAliasingValue.Text   = "Enabled";
             labelVolumetricTexturingValue.Text      = "Disabled";
         }
 
         private void ComboBoxQuality_SelectedHigh()
         {
-            labelMotionBlurValue.Text               = "Camera";
+            labelQualityMotionBlurValue.Text        = "Camera";
             labelSkinShadingValue.Text              = "Simple";
             labelBumpMappingValue.Text              = "Precise";
             labelSoftParticlesValue.Text            = "Enabled";
@@ -112,13 +105,13 @@ namespace MetroLastLightConfigEditor
             labelImagePostProcessingValue.Text      = "Full";
             labelParallaxMappingValue.Text          = "Enabled";
             labelShadowFilteringValue.Text          = "Hi-quality";
-            labelAnalyticalAntiAliasingValue.Text   = "Disabled";
+            labelAnalyticalAntiAliasingValue.Text   = "Enabled";
             labelVolumetricTexturingValue.Text      = "Low-precision, disabled for sun";
         }
 
         private void ComboBoxQuality_SelectedVeryHigh()
         {
-            labelMotionBlurValue.Text               = "Camera + objects (DX10+)";
+            labelQualityMotionBlurValue.Text        = "Camera + objects (DX10+)";
             labelSkinShadingValue.Text              = "Sub-scattering";
             labelBumpMappingValue.Text              = "Precise";
             labelSoftParticlesValue.Text            = "Enabled";
@@ -131,7 +124,7 @@ namespace MetroLastLightConfigEditor
             labelParallaxMappingValue.Text          = "Enabled with occlusion";
             labelShadowFilteringValue.Text          = "Hi-quality";
             labelAnalyticalAntiAliasingValue.Text   = "Enabled";
-            labelVolumetricTexturingValue.Text      = "Full quality, including sun";
+            labelVolumetricTexturingValue.Text      = "Full quality + sun shafts";
         }
 
         private bool HaveSettingsChanged()
@@ -144,7 +137,7 @@ namespace MetroLastLightConfigEditor
             WriteSettings(Helper.instance.DictionaryUponClosure);
 
             // Check if non-dictionary settings have changed
-            if (checkBoxSkipIntro.Checked != _skipIntroInitialState || checkBoxReadOnly.Checked != Helper.instance.IsConfigReadOnly)
+            if (checkBoxSkipIntro.Checked != _skipIntroInitialState)
                 return true;
 
             // Check if settings in dictionaries have changed
@@ -154,47 +147,45 @@ namespace MetroLastLightConfigEditor
         private void ReadSettings()
         {
             Helper.instance.AddKeysIfMissing();
-            _skipIntroInitialState             = Helper.instance.IsNoIntroSkipped;
+            _skipIntroInitialState            = Helper.instance.IsNoIntroSkipped;
 
             // Checkboxes
-            checkBoxSubtitles.Checked          = Helper.instance.Dictionary["_show_subtitles"]   == "1";
-            checkBoxFastWeaponChange.Checked   = Helper.instance.Dictionary["fast_wpn_change"]   == "1";
-            checkBoxLaserCrosshair.Checked     = Helper.instance.Dictionary["g_laser"]           == "1";
-            checkBoxHints.Checked              = Helper.instance.Dictionary["g_quick_hints"]     == "1";
-            checkBoxCrosshair.Checked          = Helper.instance.Dictionary["g_show_crosshair"]  == "on";
-            checkBoxScreenshotMode.Checked     = Helper.instance.Dictionary["r_hud_weapon"]      == "off";
-            checkBoxShowStats.Checked          = Helper.instance.Dictionary["stats"]             == "on";
-            checkBoxSkipIntro.Checked          = Helper.instance.IsNoIntroSkipped;
-            checkBoxUnlimitedAmmo.Checked      = Helper.instance.Dictionary["g_unlimitedammo"]   == "1";
-            checkBoxGodMode.Checked            = Helper.instance.Dictionary["g_god"]             == "1";
-            checkBoxReadOnly.Checked           = Helper.instance.IsConfigReadOnly;
-            checkBoxAdvancedPhysX.Checked      = Helper.instance.Dictionary["ph_advanced_physX"] == "1";
-            checkBoxDepthOfField.Checked       = Helper.instance.Dictionary["r_dx11_dof"]        == "1";
-            checkBoxTessellation.Checked       = Helper.instance.Dictionary["r_dx11_tess"]       == "1";
-            checkBoxFullscreen.Checked         = Helper.instance.Dictionary["r_fullscreen"]      == "on";
-            checkBoxGlobalIllumination.Checked = Helper.instance.Dictionary["r_gi"]              == "1";
-            checkBoxVsync.Checked              = Helper.instance.Dictionary["r_vsync"]           == "on";
+            checkBoxSubtitles.Checked         = Helper.instance.Dictionary["_show_subtitles"]   == "1";
+            checkBoxLaserCrosshair.Checked    = Helper.instance.Dictionary["g_laser"]           == "1";
+            checkBoxHints.Checked             = Helper.instance.Dictionary["g_quick_hints"]     == "1";
+            checkBoxCrosshair.Checked         = Helper.instance.Dictionary["g_show_crosshair"]  == "on";
+            checkBoxShowFPS.Checked           = Helper.instance.Dictionary["fps"]               == "on";
+            checkBoxSkipIntro.Checked         = Helper.instance.IsNoIntroSkipped;
+            checkBoxInvertYAxis.Checked       = Helper.instance.Dictionary["invert_y_axis"]     == "on";
+            checkBoxAimAssistance.Checked     = Helper.instance.Dictionary["aim_assist"]        == "1.";
+            checkBoxAdvancedPhysX.Checked     = Helper.instance.Dictionary["ph_advanced_physX"] == "1";
+            checkBoxFullscreen.Checked        = Helper.instance.Dictionary["r_fullscreen"]      == "on";
+            checkBoxVsync.Checked             = Helper.instance.Dictionary["r_vsync"]           == "on";
 
             // Comboboxes
-            comboBoxDifficulty.Text            = Helper.instance.ConvertNumberToDifficulty(Helper.instance.Dictionary["g_game_difficulty"]);
-            comboBoxVoiceLanguage.Text         = Helper.instance.ConvertCodeToLanguage(Helper.instance.Dictionary["lang_sound"]);
-            comboBoxTextLanguage.Text          = Helper.instance.ConvertCodeToLanguage(Helper.instance.Dictionary["lang_text"]);
-            comboBoxTextureFiltering.Text      = Helper.instance.Dictionary["r_af_level"] == "0" ? "AF 4X" : "AF 16X";
-            comboBoxDirectX.Text               = Helper.instance.ConvertNumberToDirectX(Helper.instance.Dictionary["r_api"]);
-            comboBoxAntialiasing.Text          = Helper.instance.Dictionary["r_msaa_level"] == "0" ? "AAA" : "MSAA 4X";
-            comboBoxQuality.Text               = Helper.instance.ConvertNumberToQualityLevel(Helper.instance.Dictionary["r_quality_level"]);
-            string resolution                  = $"{Helper.instance.Dictionary["r_res_hor"]} x {Helper.instance.Dictionary["r_res_vert"]}";
-            comboBoxResolution.Text            = comboBoxResolution.Items.Contains(resolution) ? resolution : "Custom resolution";
+            comboBoxDifficulty.Text           = Helper.instance.ConvertNumberToDifficulty(Helper.instance.Dictionary["g_game_difficulty"]);
+            comboBoxVoiceLanguage.Text        = Helper.instance.ConvertCodeToLanguage(Helper.instance.Dictionary["lang_sound"]);
+            comboBoxTextLanguage.Text         = Helper.instance.ConvertCodeToLanguage(Helper.instance.Dictionary["lang_text"]);
+            comboBoxTextureFiltering.Text     = Helper.instance.ConvertNumberToTextureFiltering(Helper.instance.Dictionary["r_af_level"]);
+            comboBoxDirectX.Text              = Helper.instance.ConvertNumberToDirectX(Helper.instance.Dictionary["r_api"]);
+            comboBoxMotionBlur.Text           = Helper.instance.ConvertNumberToMotionBlurLevel(Helper.instance.Dictionary["r_blur_level"]);
+            comboBoxQuality.Text              = Helper.instance.ConvertNumberToQualityLevel(Helper.instance.Dictionary["r_quality_level"]);
+            comboBoxSSAA.Text                 = Helper.instance.ConvertNumberToSSAA(Helper.instance.Dictionary["r_supersample"]);
+            comboBoxTessellation.Text         = Helper.instance.ConvertNumbersToTessellation(Helper.instance.Dictionary["r_dx11_tess"],
+                Helper.instance.Dictionary["r_tess_ss"]);
+            string resolution                 = $"{Helper.instance.Dictionary["r_res_hor"]} x {Helper.instance.Dictionary["r_res_vert"]}";
+            comboBoxResolution.Text           = comboBoxResolution.Items.Contains(resolution) ? resolution : "Custom resolution";
 
             // Spinners
             try
             {
-                spinnerMouseSensitivity.Value    = Decimal.Parse(Helper.instance.Dictionary["mouse_sens"]);
-                spinnerMouseAimSensitivity.Value = Decimal.Parse(Helper.instance.Dictionary["mouse_aim_sens"]);
-                spinnerMasterVolume.Value        = Decimal.Parse(Helper.instance.Dictionary["s_master_volume"]);
-                spinnerMusicVolume.Value         = Decimal.Parse(Helper.instance.Dictionary["s_music_volume"]);
-                spinnerGamma.Value               = Decimal.Parse(Helper.instance.Dictionary["r_gamma"]);
-                spinnerFov.Value                 = Decimal.Parse(Helper.instance.Dictionary["sick_fov"]);
+                spinnerMouseSensitivity.Value = Decimal.Parse(Helper.instance.Dictionary["sens"]);
+                spinnerMasterVolume.Value     = Decimal.Parse(Helper.instance.Dictionary["s_master_volume"]);
+                spinnerMusicVolume.Value      = Decimal.Parse(Helper.instance.Dictionary["s_music_volume"]);
+                spinnerDialogsVolume.Value    = Decimal.Parse(Helper.instance.Dictionary["s_dialogs_volume"]);
+                spinnerEffectsVolume.Value    = Decimal.Parse(Helper.instance.Dictionary["s_effects_volume"]);
+                spinnerGamma.Value            = Decimal.Parse(Helper.instance.Dictionary["r_gamma"]);
+                spinnerFov.Value              = Decimal.Parse(Helper.instance.Dictionary["r_base_fov"]);
             }
             catch (Exception ex)
             {
@@ -210,6 +201,7 @@ namespace MetroLastLightConfigEditor
             textBoxSteamInstallPath.Text   = Helper.instance.SteamInstallPath ?? "Steam not found";
             textBoxConfigFilePath.Text     = Helper.instance.ConfigFilePath ?? "Config not found";
             textBoxGameExecutablePath.Text = Helper.instance.GameExecutablePath ?? "Game not found";
+            textBoxSavedGamesPath.Text     = Helper.instance.SavedGamesPath;
 
             // Set button states
             buttonReload.Enabled           = Helper.instance.ConfigFilePath != null;
@@ -226,12 +218,10 @@ namespace MetroLastLightConfigEditor
             }
             else
             {
-                string steamPath = Helper.instance.SteamInstallPath != null ? String.Format(@"{0}\{1}", Helper.instance.SteamInstallPath,
-                    @"userdata\<user-id>\43110\remote\") : @"Steam\userdata\<user-id>\43110\remote\";
                 string text = String.Format("{0}\n\n{1}\n\n{2}{3}",
                     "We were not able to locate the config file for Metro: Last Light, please run the game at least once to generate it.",
                     "You can also point to its location by using the corresponding Browse button. It should be located here:",
-                    steamPath,
+                    @"%LOCALAPPDATA%\4A Games\Metro LL\<user-id>\",
                     Helper.instance.SteamInstallPath != null ? "\n\nDo you want to run the game now?" : "");
 
                 if (MessageBox.Show(text, "Config not found", Helper.instance.SteamInstallPath != null ? MessageBoxButtons.YesNo :
@@ -267,37 +257,36 @@ namespace MetroLastLightConfigEditor
         {
             // Checkboxes
             dictionary["_show_subtitles"]   = checkBoxSubtitles.Checked ? "1" : "0";
-            dictionary["fast_wpn_change"]   = checkBoxFastWeaponChange.Checked ? "1" : "0";
             dictionary["g_laser"]           = checkBoxLaserCrosshair.Checked ? "1" : "0";
             dictionary["g_quick_hints"]     = checkBoxHints.Checked ? "1" : "0";
             dictionary["g_show_crosshair"]  = checkBoxCrosshair.Checked ? "on" : "off";
-            dictionary["r_hud_weapon"]      = checkBoxScreenshotMode.Checked ? "off" : "on";
-            dictionary["stats"]             = checkBoxShowStats.Checked ? "on" : "off";
-            dictionary["g_unlimitedammo"]   = checkBoxUnlimitedAmmo.Checked ? "1" : "0";
-            dictionary["g_god"]             = checkBoxGodMode.Checked ? "1" : "0";
+            dictionary["fps"]               = checkBoxShowFPS.Checked ? "on" : "off";
+            dictionary["invert_y_axis"]     = checkBoxInvertYAxis.Checked ? "on" : "off";
+            dictionary["aim_assist"]        = checkBoxAimAssistance.Checked ? "1." : "0.";
             dictionary["ph_advanced_physX"] = checkBoxAdvancedPhysX.Checked ? "1" : "0";
-            dictionary["r_dx11_dof"]        = checkBoxDepthOfField.Checked ? "1" : "0";
-            dictionary["r_dx11_tess"]       = checkBoxTessellation.Checked ? "1" : "0";
             dictionary["r_fullscreen"]      = checkBoxFullscreen.Checked ? "on" : "off";
-            dictionary["r_gi"]              = checkBoxGlobalIllumination.Checked ? "1" : "0";
             dictionary["r_vsync"]           = checkBoxVsync.Checked ? "on" : "off";
 
             // Comboboxes
             dictionary["g_game_difficulty"] = Helper.instance.ConvertDifficultyToNumber(comboBoxDifficulty.Text);
             dictionary["lang_sound"]        = Helper.instance.ConvertLanguageToCode(comboBoxVoiceLanguage.Text);
             dictionary["lang_text"]         = Helper.instance.ConvertLanguageToCode(comboBoxTextLanguage.Text);
-            dictionary["r_af_level"]        = comboBoxTextureFiltering.Text == "AF 4X" ? "0" : "1";
+            dictionary["r_af_level"]        = Helper.instance.ConvertTextureFilteringToNumber(comboBoxTextureFiltering.Text);
             dictionary["r_api"]             = Helper.instance.ConvertDirectXToNumber(comboBoxDirectX.Text);
-            dictionary["r_msaa_level"]      = comboBoxAntialiasing.Text == "AAA" ? "0" : "1";
+            dictionary["r_blur_level"]      = Helper.instance.ConvertMotionBlurLevelToNumber(comboBoxMotionBlur.Text);
             dictionary["r_quality_level"]   = Helper.instance.ConvertQualityLevelToNumber(comboBoxQuality.Text);
+            dictionary["r_supersample"]     = Helper.instance.ConvertSSAAToNumber(comboBoxSSAA.Text);
+            dictionary["r_dx11_tess"]       = Helper.instance.ConvertTessellationToNumbers(comboBoxTessellation.Text)[0];
+            dictionary["r_tess_ss"]         = Helper.instance.ConvertTessellationToNumbers(comboBoxTessellation.Text)[1];
 
             // Spinners
-            dictionary["mouse_sens"]        = spinnerMouseSensitivity.Value.Equals(1) ? "1." : spinnerMouseSensitivity.Value.ToString();
-            dictionary["mouse_aim_sens"]    = spinnerMouseAimSensitivity.Value.ToString();
-            dictionary["s_master_volume"]   = spinnerMasterVolume.Value.ToString();
-            dictionary["s_music_volume"]    = spinnerMusicVolume.Value.ToString();
+            dictionary["sens"]              = spinnerMouseSensitivity.Value.Equals(1) ? "1." : spinnerMouseSensitivity.Value.ToString();
+            dictionary["s_master_volume"]   = spinnerMasterVolume.Value.ToString("F2");
+            dictionary["s_music_volume"]    = spinnerMusicVolume.Value.ToString("F2");
+            dictionary["s_dialogs_volume"]  = spinnerDialogsVolume.Value.ToString("F2");
+            dictionary["s_effects_volume"]  = spinnerEffectsVolume.Value.ToString("F2");
             dictionary["r_gamma"]           = spinnerGamma.Value.Equals(1) ? "1." : spinnerGamma.Value.ToString();
-            dictionary["sick_fov"]          = $"{spinnerFov.Value.ToString()}.";
+            dictionary["r_base_fov"]        = spinnerFov.Value.ToString();
 
             // Textboxes
             dictionary["r_res_hor"]         = textBoxWidth.Text;
@@ -316,11 +305,9 @@ namespace MetroLastLightConfigEditor
                 // Show a file browser
                 if (openFileDialog.ShowDialog() == DialogResult.OK)
                 {
+                    // Find config/game paths and reload config automatically
                     Helper.instance.SteamInstallPath = new FileInfo(openFileDialog.FileName).DirectoryName.ToLower();
-
-                    // Find config and game paths automatically
                     Helper.instance.UpdateConfigAndGamePaths();
-
                     refreshUI();
                 }
             }
@@ -341,14 +328,9 @@ namespace MetroLastLightConfigEditor
                 // Show a file browser
                 if (openFileDialog.ShowDialog() == DialogResult.OK)
                 {
-                    Helper.instance.ConfigFilePath = openFileDialog.FileName.ToLower();
-                    textBoxConfigFilePath.Text     = Helper.instance.ConfigFilePath;
-                    buttonReload.Enabled           = true;
-                    buttonSave.Enabled             = true;
-                    fileSystemWatcherConfig.Path   = new FileInfo(openFileDialog.FileName).DirectoryName;
-
                     // Reload config automatically
-                    buttonReload.PerformClick();
+                    Helper.instance.ConfigFilePath = openFileDialog.FileName.ToLower();
+                    refreshUI();
                 }
             }
         }
@@ -357,24 +339,26 @@ namespace MetroLastLightConfigEditor
         {
             using (OpenFileDialog openFileDialog = new OpenFileDialog())
             {
-                openFileDialog.Filter = "Metro: Last Light executable|metroLL.exe";
+                openFileDialog.Filter = "Metro: Last Light executable|MetroLL.exe";
                 openFileDialog.InitialDirectory = Helper.instance.GameInstallPath;
 
                 // Show a file browser
                 if (openFileDialog.ShowDialog() == DialogResult.OK)
                 {
-                    Helper.instance.GameInstallPath    = new FileInfo(openFileDialog.FileName).DirectoryName.ToLower();
+                    // Update UI
+                    Helper.instance.GameInstallPath = new FileInfo(openFileDialog.FileName).DirectoryName.ToLower();
                     Helper.instance.GameExecutablePath = openFileDialog.FileName.ToLower();
-                    _skipIntroInitialState             = Helper.instance.IsNoIntroSkipped;
-                    textBoxGameExecutablePath.Text     = Helper.instance.GameExecutablePath;
-                    checkBoxSkipIntro.Checked          = Helper.instance.IsNoIntroSkipped;
-                    buttonStartGameNoSteam.Enabled     = true;
-                    fileSystemWatcherNoIntro.Path      = Helper.instance.GameInstallPath;
-
-                    // Reload config automatically
-                    buttonReload.PerformClick();
+                    refreshUI();
                 }
             }
+        }
+
+        private void ButtonOpenSavedGamesPath_Click(object sender, EventArgs e)
+        {
+            if (Directory.Exists(Helper.instance.SavedGamesPath))
+                StartProcess(Helper.instance.SavedGamesPath);
+            else
+                StartProcess(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments));
         }
 
         private void ComboBoxResolution_SelectedIndexChanged(object sender, EventArgs e)
@@ -411,16 +395,8 @@ namespace MetroLastLightConfigEditor
 
         private void ComboBoxDirectX_SelectedIndexChanged(object sender, EventArgs e)
         {
-            // Disable antialiasing in DX9
-            comboBoxAntialiasing.Enabled = comboBoxDirectX.Text != "DirectX 9";
-
             // Disable DX11 features in DX9/10
-            groupBoxDirectX11.Enabled = comboBoxDirectX.Text == "DirectX 11";
-        }
-
-        private void CheckBoxReadOnly_CheckedChanged(object sender, EventArgs e)
-        {
-            labelCheatsWarning.Visible = checkBoxReadOnly.Checked;
+            comboBoxTessellation.Enabled = comboBoxDirectX.Text == "DirectX 11";
         }
 
         private void TextBoxResolution_KeyPress(object sender, KeyPressEventArgs e)
@@ -439,7 +415,7 @@ namespace MetroLastLightConfigEditor
 
         private void ButtonDonate_Click(object sender, EventArgs e)
         {
-            StartProcess("https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=X8KPQY9YGX4XQ");
+            StartProcess("https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=EYBPZ5JT9WUNS");
         }
 
         private void LinkLabelUpdateAvailable_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
@@ -451,6 +427,13 @@ namespace MetroLastLightConfigEditor
         private void ButtonReload_Click(object sender, EventArgs e)
         {
             Helper.instance.ReadConfigFile();
+
+            // Necessary string formatting for FOV and sensitivity (ex: 50. -> 50.000)
+            Helper.instance.Dictionary["r_base_fov"]            = Helper.instance.Dictionary["r_base_fov"].PadRight(6, '0');
+            Helper.instance.Dictionary["sens"]                  = Helper.instance.Dictionary["sens"].PadRight(5, '0');
+            Helper.instance.DictionaryUponClosure["r_base_fov"] = Helper.instance.Dictionary["r_base_fov"];
+            Helper.instance.DictionaryUponClosure["sens"]       = Helper.instance.Dictionary["sens"];
+
             ReadSettings();
         }
 
@@ -464,7 +447,6 @@ namespace MetroLastLightConfigEditor
 
                 WriteSettings(Helper.instance.Dictionary);
                 _skipIntroInitialState = checkBoxSkipIntro.Checked;
-                Helper.instance.IsConfigReadOnly = checkBoxReadOnly.Checked;
 
                 if (Helper.instance.WriteConfigFile())
                     MessageBox.Show("The config file has been saved successfully!",
@@ -504,7 +486,7 @@ namespace MetroLastLightConfigEditor
 
         private void ButtonStartGameSteam_Click(object sender, EventArgs e)
         {
-            StartProcess("steam://run/43110");
+            StartProcess("steam://run/43160");
         }
 
         private void BackgroundWorker_DoWork(object sender, DoWorkEventArgs e)
